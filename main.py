@@ -24,7 +24,7 @@ def add_request():
     print("Request added")
 
 def view():
-    print("\nWaiting Students -> ")
+    print("\n ---Waiting Students---> ")
 
     if len(waiting)==0:
         print("No students waiting.")
@@ -60,13 +60,53 @@ def find_matches():
                     count+=1
         if count==0:
             print("No matching students")
+
+def dispatch():
+    print("\n---Available Cabs---")
+    for i, cab in enumerate(cabs):
+        if not cab.has_left:
+            print(i+1, cab.driver, "-", cab.destination, "-", cab.time_slot)
+
+    num = int(input("Enter cab number: "))
+
+    if num<1 or num>len(cabs):
+        print("Invalid cab number")
+        return
+
+    cab = cabs[num-1]
+
+    if cab.has_left:
+        print("This cab has already left.")
+        return
+
+    count = 0
+
+    for student in waiting[:]:
+        if student.destination==cab.destination and student.time_slot==cab.time_slot:
+            if len(cab.students) < cab.seats:
+                cab.students.append(student)
+                waiting.remove(student)
+                count+=1
+
+    if count==0:
+        print("No matching students available.")
+        return
+
+    cab.has_left=True
+
+    print("Cab dispatched.")
+    print("Students travelling:")
+    for student in cab.students:
+        print(student.name)
+
 def main():
     while True:
-        print("\nCab Pool Matcher")
+        print("\n---Cab Pool Matcher---")
         print("1. Add ride request")
         print("2. View waiting students and cabs")
         print("3. Quit")
         print("4. Find matches")
+        print("5. Dispatch cab")
 
         choice = input("Enter your choice: ")
 
@@ -79,6 +119,8 @@ def main():
             break
         elif choice == "4":
             find_matches()
+        elif choice == "5":
+            dispatch()
         else:
             print("Invalid choice")
 
