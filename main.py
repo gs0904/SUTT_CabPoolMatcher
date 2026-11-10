@@ -1,6 +1,6 @@
 from classes import RideRequest, Cab
+from data import load_cabs
 waiting=[]
-cabs= []
 def add_request():
     name= input("Enter name: ").title()
     if name.strip() == "":
@@ -60,4 +60,6 @@ def main():
             break
         else:
             print("Invalid choice")
+
+cabs=load_cabs()
 main()
