@@ -1,5 +1,6 @@
 from classes import RideRequest, Cab
 from data import load_cabs
+import heapq
 waiting=[]
 def add_request():
     name= input("Enter name: ").title()
@@ -18,6 +19,7 @@ def add_request():
     if not year.isdigit() or int(year)<1 or int(year)>5:
         print("Invalid year")
         return
+    year=int(year)
 
     student = RideRequest(name, destination, time_slot, year)
     waiting.append(student)
@@ -41,6 +43,15 @@ def view():
             print(cab.driver, cab.destination, cab.time_slot)
             print("Seats:", len(cab.students), "/", cab.seats)
             print("Departed:", cab.has_left)
+
+def make_queues():
+    queues = {}
+    for i, student in enumerate(waiting):
+        key = (student.destination, student.time_slot)
+        if key not in queues:
+            queues[key] = []
+        heapq.heappush(queues[key], (-student.year, student.requested_at, i, student))
+    return queues
 
 def find_matches():
     matched = waiting.copy()
