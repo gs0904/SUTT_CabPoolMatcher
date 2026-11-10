@@ -14,7 +14,7 @@ def add_request():
     if time_slot not in ["Morning", "Afternoon", "Evening", "Night"]:
         print("Invalid time slot")
         return
-    year= int(input("Enter year (1-5): "))
+    year= input("Enter year (1-5): ")
     if not year.isdigit() or int(year)<1 or int(year)>5:
         print("Invalid year")
         return
@@ -22,6 +22,25 @@ def add_request():
     student = RideRequest(name, destination, time_slot, year)
     waiting.append(student)
     print("Request added")
+
+def view():
+    print("\nWaiting Students -> ")
+
+    if len(waiting)==0:
+        print("No students waiting.")
+    else:
+        for student in waiting:
+            print(student.name, student.destination, student.time_slot, student.year)
+
+    print("\nCabs -> ")
+
+    if len(cabs)==0:
+        print("No cabs available.")
+    else:
+        for cab in cabs:
+            print(cab.driver, cab.destination, cab.time_slot)
+            print("Seats:", len(cab.students), "/", cab.seats)
+            print("Departed:", cab.has_left)
 
 def main():
     while True:
@@ -35,7 +54,7 @@ def main():
         if choice== "1":
             add_request()
         elif choice== "2":
-            print(":)")
+            view()
         elif choice== "3":
             print("Byeee")
             break
