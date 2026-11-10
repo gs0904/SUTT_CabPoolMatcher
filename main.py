@@ -42,12 +42,31 @@ def view():
             print("Seats:", len(cab.students), "/", cab.seats)
             print("Departed:", cab.has_left)
 
+def find_matches():
+    matched = waiting.copy()
+
+    for cab in cabs:
+        if cab.has_left:
+            continue
+
+        print("\nCab:", cab.driver)
+ 
+        count = 0
+        for student in matched[:]:
+            if student.destination==cab.destination and student.time_slot==cab.time_slot:
+                if count< cab.seats-len(cab.students):
+                    print(student.name, "- Year", student.year)
+                    matched.remove(student)
+                    count+=1
+        if count==0:
+            print("No matching students")
 def main():
     while True:
         print("\nCab Pool Matcher")
         print("1. Add ride request")
         print("2. View waiting students and cabs")
         print("3. Quit")
+        print("4. Find matches")
 
         choice = input("Enter your choice: ")
 
@@ -58,6 +77,8 @@ def main():
         elif choice== "3":
             print("Byeee")
             break
+        elif choice == "4":
+            find_matches()
         else:
             print("Invalid choice")
 
