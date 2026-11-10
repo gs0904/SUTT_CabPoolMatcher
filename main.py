@@ -2,14 +2,26 @@ from classes import RideRequest, Cab
 waiting=[]
 cabs= []
 def add_request():
-    name= input("Enter name: ")
-    destination= input("Enter destination (Delhi/Jaipur): ")
-    time_slot= input("Enter time slot (Morning/Afternoon/Evening/Night): ")
+    name= input("Enter name: ").title()
+    if name.strip() == "":
+        print("cannot be empty")
+        return
+    destination= input("Enter destination (Delhi/Jaipur): ").title()
+    if destination not in ["Delhi", "Jaipur"]:
+        print("Invalid")
+        return
+    time_slot= input("Enter time slot (Morning/Afternoon/Evening/Night): ").title()
+    if time_slot not in ["Morning", "Afternoon", "Evening", "Night"]:
+        print("Invalid time slot")
+        return
     year= int(input("Enter year (1-5): "))
+    if not year.isdigit() or int(year)<1 or int(year)>5:
+        print("Invalid year")
+        return
 
     student = RideRequest(name, destination, time_slot, year)
     waiting.append(student)
-    print("Request added successfully!")
+    print("Request added")
 
 def main():
     while True:
