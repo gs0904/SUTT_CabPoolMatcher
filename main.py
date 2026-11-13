@@ -90,14 +90,16 @@ def dispatch():
         print("This cab has already left.")
         return
 
-    count = 0
+    queues=make_queues()
+    key=(cab.destination, cab.time_slot)
+    count=0
 
-    for student in waiting[:]:
-        if student.destination==cab.destination and student.time_slot==cab.time_slot:
-            if len(cab.students) < cab.seats:
-                cab.students.append(student)
-                waiting.remove(student)
-                count+=1
+    if key in queues:
+        while queues[key] and len(cab.students) < cab.seats:
+            student=heapq.heappop(queues[key])[3]
+            cab.students.append(student)
+            waiting.remove(student)
+            count+=1 
 
     if count==0:
         print("No matching students available.")
